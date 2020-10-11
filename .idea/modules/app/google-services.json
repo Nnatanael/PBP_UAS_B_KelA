@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1091570638542",
+    "firebase_url": "https://projectutspetshop.firebaseio.com",
+    "project_id": "projectutspetshop",
+    "storage_bucket": "projectutspetshop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091570638542:android:1aee6b47bc6b6827a0fa9f",
+        "android_client_info": {
+          "package_name": "com.naldonatanael.project_uts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1091570638542-0c5cb13e9uvibs6tvi8fek5t6qgd4kkd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.naldonatanael.project_uts",
+            "certificate_hash": "5bc5e6cdfe033c0aa1bdd4ffc82a9817b79b82a3"
+          }
+        },
+        {
+          "client_id": "1091570638542-qtif5p78us6c62ujm26gslvfpkaln5di.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVQgPNUyChDHF-ItWoeT2nisgAOZ981-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1091570638542-qtif5p78us6c62ujm26gslvfpkaln5di.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Nama Pet Shop</string>
+    <string name="email">Email</string>
+    <string name="password"> Password</string>
+    <string name="layanan">Layanan</string>
+    <string name="tarif">Tarif</string>
+    <string name="durasi">Durasi</string>
+    <string name="rambut">Rambut</string>
+    <string name="berat">Berat</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="btnSign_Up">Sign Up</string>
+    <string name="btnSign_In">Sign In</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoibm5hdGFuYWVsIiwiYSI6ImNrZm5xdjhkODE3bzYyeHA3OXN4dXJ2cXYifQ.nZ5e3iWNRsm84cTsVvr6xQ</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="petshop_woof_berdiri_sejak_2020_kami_memiliki_layanan_untuk_merawat_peliharaan_anda">Petshop Woof berdiri sejak 2020.Kami memiliki layanan untuk merawat peliharaan anda.</string>
+    <string name="be_care_be_woof">Be Care Be Woof</string>
+    <string name="petshop_woof">Petshop Woof</string>
+    <string name="profile_image">Profile Image</string>
+</resources>
