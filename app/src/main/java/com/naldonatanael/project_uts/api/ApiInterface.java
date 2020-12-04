@@ -44,4 +44,6 @@ public interface ApiInterface {
 
     @POST("user/delete/{id}")
     Call<com.naldonatanael.project_uts.api.UserResponse> deleteUser(@Path("id") String id);
+
+
 }
