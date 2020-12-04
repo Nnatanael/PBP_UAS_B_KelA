@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -27,11 +29,16 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private FirebaseUser firebaseUser;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         //get data mahasiswa
         ListLayanan = new DaftarLayanan().LAYANAN;
@@ -84,9 +91,17 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, MapActivity.class));
         }else if(item.getItemId()==R.id.AboutUs){
             startActivity(new Intent(this, ContactUs.class));
-        }/*else if(item.getItemId()==R.id.ProfilSaya){
-            startActivity(new Intent(this, ProfilSaya.class));
-        }*/
+        }else if(item.getItemId()==R.id.ProfilSaya){
+            startActivity(new Intent(this, Profile.class));
+        }else if (item.getItemId() == R.id.LogoutAkun) {
+            if(firebaseUser != null) {
+                firebaseAuth.signOut();
+            }
+            Intent intent = new Intent(this, LoginActivity.class);// New activity
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish(); // Call once you redirect to another activity
+        }
 
         return true;
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Nama Pet Shop</string>
+    <string name="app_name">Woof Pet Shop</string>
     <string name="email">Email</string>
     <string name="password"> Password</string>
     <string name="layanan">Layanan</string>
@@ -17,4 +17,12 @@
     <string name="be_care_be_woof">Be Care Be Woof</string>
     <string name="petshop_woof">Petshop Woof</string>
     <string name="profile_image">Profile Image</string>
+    <string name="start_navigation">start_navigation</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="update_profile">update_profile</string>
+    <string name="nama">nama</string>
+    <string name="no_telp">no_telp</string>
+    <string name="cancel">cancel</string>
+    <string name="submit">submit</string>
 </resources>
