@@ -2,7 +2,7 @@ package com.naldonatanael.project_uts.UnitTest;
 
 import com.naldonatanael.project_uts.api.ApiClient;
 import com.naldonatanael.project_uts.api.ApiInterface;
-import com.naldonatanael.project_uts.api.UserResponse;
+import com.naldonatanael.project_uts.response.UserResponse;
 import com.naldonatanael.project_uts.dao.UserDAO;
 
 import retrofit2.Call;

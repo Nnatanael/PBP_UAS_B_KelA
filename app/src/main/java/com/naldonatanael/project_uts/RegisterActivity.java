@@ -4,15 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,11 +28,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.naldonatanael.project_uts.api.ApiClient;
 import com.naldonatanael.project_uts.api.ApiInterface;
-import com.naldonatanael.project_uts.api.UserResponse;
+import com.naldonatanael.project_uts.response.UserResponse;
 import com.naldonatanael.project_uts.model.User;
 import com.scottyab.aescrypt.AESCrypt;
 
-import java.io.ByteArrayOutputStream;
 import java.security.GeneralSecurityException;
 
 import retrofit2.Call;

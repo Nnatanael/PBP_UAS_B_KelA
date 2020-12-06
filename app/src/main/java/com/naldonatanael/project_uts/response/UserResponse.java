@@ -1,4 +1,4 @@
-package com.naldonatanael.project_uts.api;
+package com.naldonatanael.project_uts.response;
 
 import com.naldonatanael.project_uts.dao.UserDAO;
 import com.google.gson.annotations.Expose;

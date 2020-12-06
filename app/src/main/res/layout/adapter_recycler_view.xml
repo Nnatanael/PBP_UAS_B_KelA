@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
-        tools:context=".RecyclerViewAdapter"
+        tools:context=".adapter.RecyclerViewAdapter"
         android:id="@+id/ParentAdapter">
 
         <LinearLayout
@@ -27,7 +27,7 @@
                 <ImageView
                     android:layout_width="110dp"
                     android:layout_height="110dp"
-                    android:id="@+id/ivFotoProfil"
+                    android:id="@+id/twGambar"
                     app:profileImages="@{lyn.imgURL}">
                 </ImageView>
             </LinearLayout>

@@ -1,78 +1,108 @@
 package com.naldonatanael.project_uts;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.naldonatanael.project_uts.adapter.RecyclerViewAdapter;
+import com.naldonatanael.project_uts.api.ApiClient;
+import com.naldonatanael.project_uts.api.ApiInterface;
+import com.naldonatanael.project_uts.dao.LayananDAO;
+import com.naldonatanael.project_uts.response.LayananResponse;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<Layanan> ListLayanan;
+    private List<LayananDAO> LayananList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+
+    private ImageButton ibBack;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
+        ibBack = findViewById(R.id.ibBack);
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
-        //get data mahasiswa
-        ListLayanan = new DaftarLayanan().LAYANAN;
+        loadLayanan();
 
-        //recycler view
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 0){
+            if(requestCode == RESULT_OK) {
+                finish();
+                startActivity(getIntent());
+            }
+        }
+    }
+
+    private void loadLayanan() {
+        ApiInterface apiGetLayanan = ApiClient.getClient().create(ApiInterface.class);
+        Call<LayananResponse> callGetLayanan = apiGetLayanan.getAllLayanan("data");
+
+        callGetLayanan.enqueue(new Callback<LayananResponse>() {
+            @Override
+            public void onResponse(Call<LayananResponse> call, Response<LayananResponse> response) {
+                generateDataList(response.body().getLayanan());
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(Call<LayananResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Kesalahan Jaringan", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void generateDataList(List<LayananDAO> LayananList) {
         recyclerView = findViewById(R.id.recycler_view_layanan);
-        adapter = new RecyclerViewAdapter(MainActivity.this, ListLayanan);
-        mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
+        adapter = new RecyclerViewAdapter(LayananList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String CHANNEL_ID = "Channel 1";
-            CharSequence name = "Channel 1";
-            String description = "This is Channel 1";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
 
-        FirebaseMessaging.getInstance().subscribeToTopic("news")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String mag = "Firebase Cloud Messaging Connected";
-                        if (!task.isSuccessful()) {
-                            mag = "Failed";
-                        }
-                        Toast.makeText(MainActivity.this, mag, Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+
     }
 
     @Override

@@ -31,7 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Ganti Foto" />
+            android:text="Upload Foto" />
+
 
         <View
             android:layout_width="400dp"
@@ -44,7 +45,37 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:text="Email            : " />
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:id="@+id/txtEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=" -"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="400dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:background="#b0b0b0"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -74,7 +105,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -104,7 +135,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -135,7 +166,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Ganti Profile" />
+            android:text="Update Profile" />
 
     </LinearLayout>
 </ScrollView>

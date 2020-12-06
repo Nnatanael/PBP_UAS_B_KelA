@@ -2,10 +2,13 @@ package com.naldonatanael.project_uts;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,16 +30,35 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.naldonatanael.project_uts.model.User;
+import com.scottyab.aescrypt.AESCrypt;
+
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Profile extends AppCompatActivity {
 
-    Button btn_update_profile, btn_upload_photo;
-    TextView txtNama, txtAlamat, txtNoTelp;
+    Button btn_Update_profil, btnPhoto, btnResend;
+    TextView txtEmail, txtNama, txtAlamat, txtNoTelp;
     ImageView imageView;
+    UpdateProfile UpdateProfileClass;
     private SharedPreferences preferences;
     public static final int mode = Activity.MODE_PRIVATE;
     private String nama = "";
@@ -45,36 +67,71 @@ public class Profile extends AppCompatActivity {
     public static final int CAMERA_PERM_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
     public static final int GALLERY_REQUEST_CODE = 105;
-    String currentPhotoPath, photoPath;
+    String currentPhotoPath, photoPath, userID;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference, pathReferences;
+    private User userFromDB, user;
+    private Bitmap bitmap;
+    private Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        loadPreferences();
+//        loadPreferences();
 
         imageView = findViewById(R.id.image_view);
-        btn_upload_photo = findViewById(R.id.btn_upload_photo);
+        btnPhoto = findViewById(R.id.btn_upload_photo);
+        txtEmail = findViewById(R.id.txtEmail);
         txtNama = findViewById(R.id.txtNama);
         txtAlamat = findViewById(R.id.txtAlamat);
         txtNoTelp = findViewById(R.id.txtNoTelp);
-        btn_update_profile = findViewById(R.id.btn_update_profile);
+        btn_Update_profil = findViewById(R.id.btn_update_profile);
 
-        imageView.setImageURI(Uri.parse(photoPath));
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        userID = firebaseUser.getUid();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference("images");
+        pathReferences = storageReference.child("userID");
 
-        txtNama.setText(nama);
-        txtAlamat.setText(alamat);
-        txtNoTelp.setText(noTelp);
+        // READ FROM DATABASE
+        databaseReference.child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                txtEmail.setText(dataSnapshot.child("email").getValue().toString());
+                txtNama.setText(dataSnapshot.child("nama").getValue().toString());
+                txtAlamat.setText(dataSnapshot.child("alamat").getValue().toString());
+                txtNoTelp.setText(dataSnapshot.child("telp").getValue().toString());
+            }
 
-        btn_upload_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        setImageView();
+
+//        if(photoPath != null) {
+//            imageView.setImageURI(Uri.parse(photoPath));
+//        }
+
+        btnPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkPermission();
             }
         });
 
-        btn_update_profile.setOnClickListener(new View.OnClickListener() {
+        btn_Update_profil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Profile.this, UpdateProfile.class);
@@ -109,29 +166,6 @@ public class Profile extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-        return true;
-
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==R.id.Home){
-            startActivity(new Intent(this, MainActivity.class));
-        }else if(item.getItemId()==R.id.Location){
-            startActivity(new Intent(this, MapActivity.class));
-        }else if(item.getItemId()==R.id.AboutUs){
-            startActivity(new Intent(this, ContactUs.class));
-        }else if(item.getItemId()==R.id.ProfilSaya){
-            startActivity(new Intent(this, Profile.class));
-        }
-
-        return true;
-    }
-
     private void loadPreferences() {
         String name = "profile";
         preferences = getSharedPreferences(name, mode);
@@ -147,7 +181,7 @@ public class Profile extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("photoPath", currentPhotoPath);
         editor.apply();
-        Toast.makeText(this, "Profile Photo Successfully Updated", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Photo saved", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -156,11 +190,19 @@ public class Profile extends AppCompatActivity {
         if(requestCode == CAMERA_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 File f = new File(currentPhotoPath);
-                imageView.setImageURI(Uri.fromFile(f));
+//                imageView.setImageURI(Uri.fromFile(f));
                 Log.d("tag", "Absolute Url of Image is " + Uri.fromFile(f));
 
+                // SAVE TO FIREBASE STORAGE
+//                bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+                uri = Uri.fromFile(f);
+                uploadImage(uri);
+
+                // SET IMAGEVIEW
+                setImageView();
+
                 //save image path with sharedPreferences
-                savePreferences();
+//                savePreferences();
 
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 Uri contentUri = Uri.fromFile(f);
@@ -176,7 +218,7 @@ public class Profile extends AppCompatActivity {
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
                 Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
-                imageView.setImageURI(contentUri);
+//                imageView.setImageURI(contentUri);
             }
 
         }
@@ -202,6 +244,7 @@ public class Profile extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
+
         return image;
     }
 
@@ -225,5 +268,58 @@ public class Profile extends AppCompatActivity {
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
         }
+    }
+
+    private String decryt(String AESPassword, String encryptedMsg) {
+        String messageAfterDecrypt = null;
+        try {
+            messageAfterDecrypt = AESCrypt.decrypt(AESPassword, encryptedMsg);
+        }catch (GeneralSecurityException e){
+            //handle error - could be due to incorrect password or tampered encryptedMsg
+            e.printStackTrace();
+        }
+        return messageAfterDecrypt;
+    }
+
+    private void uploadImage(Uri uri) {
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("loading....");
+        progressDialog.setTitle("Upload in Progress");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        storageReference.child(userID).putFile(uri)
+                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        progressDialog.dismiss();
+                        Toast.makeText(Profile.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(Profile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void setImageView() {
+        final long ONE_MEGABYTE = 1024 * 1024 * 10;
+
+        storageReference.child(userID).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Profile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

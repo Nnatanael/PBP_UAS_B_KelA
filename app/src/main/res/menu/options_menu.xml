@@ -17,6 +17,10 @@
         android:id="@+id/AboutUs"
         android:title="AboutUs"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/Booking"
+        android:title="Booking Layanan"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/ProfilSaya"
