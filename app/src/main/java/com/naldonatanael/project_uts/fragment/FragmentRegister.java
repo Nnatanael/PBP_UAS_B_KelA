@@ -1,4 +1,4 @@
-package com.naldonatanael.project_uts;
+package com.naldonatanael.project_uts.fragment;
 
 import android.os.Bundle;
 
@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.naldonatanael.project_uts.R;
 
 public class FragmentRegister extends Fragment {
 

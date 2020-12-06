@@ -16,6 +16,7 @@
         android:id="@+id/ParentAdapter">
 
         <LinearLayout
+            android:id="@+id/mParentAdapt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

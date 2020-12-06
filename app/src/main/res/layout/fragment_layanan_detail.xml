@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bodyAccent"
+    tools:context=".fragment.LayananDetailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageButton
+            android:id="@+id/ibClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ic_baseline_close_24"
+            android:foreground="?android:attr/selectableItemBackground"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="6dp">
+
+            <LinearLayout
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/twGambar"
+                        android:layout_width="330dp"
+                        android:layout_height="100dp"
+                        android:background="@color/bodyAccent"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:text="Nama Layanan"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/tvNamaLayanan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginEnd="-1dp"
+                            android:hint="Nama Layanan"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:text="Rambut"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/twRambut"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginEnd="-1dp"
+                            android:hint="Rambut"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:text="Berat"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/twBerat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginEnd="-1dp"
+                            android:hint="Berat"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:text="Tarif"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/twTarif"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginEnd="-1dp"
+                            android:hint="Tarif"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnLayanan"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_weight="0.8"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Booking Layanan"
+                android:textColor="@color/bodyAccent"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -23,68 +23,100 @@ import com.naldonatanael.project_uts.Layanan;
 import com.naldonatanael.project_uts.R;
 import com.naldonatanael.project_uts.dao.LayananDAO;
 import com.naldonatanael.project_uts.databinding.AdapterRecyclerViewBinding;
+import com.naldonatanael.project_uts.fragment.LayananDetailFragment;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.LayananViewHolder> {
     private List<LayananDAO> dataList;
-    private List<LayananDAO> filteredDataList;
+//    private List<LayananDAO> filteredDataList;
     private Context context;
 
-    public RecyclerViewAdapter(List<LayananDAO> dataList) {
+    public RecyclerViewAdapter(List<LayananDAO> dataList,Context context) {
         this.dataList = dataList;
-        this.filteredDataList = dataList;
+//        this.filteredDataList = dataList;
         this.context = context;
     }
 
-
-
     @NonNull
     @Override
-    public RecyclerViewAdapter.LayananViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewAdapter.LayananViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.adapter_recycler_view, parent, false);
         return new RecyclerViewAdapter.LayananViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewAdapter.LayananViewHolder holder, int position) {
-        final LayananDAO lyn = filteredDataList.get(position);
-        holder.tvLayanan.setText(lyn.getNamaLayanan());
-        holder.tvRambut.setText(lyn.getRambut());
-        holder.tvBerat.setText(lyn.getBerat());
-        holder.tvDurasi.setText(lyn.getDurasi());
-        holder.tvTarif.setText((int) lyn.getTarif());
+    public void onBindViewHolder( RecyclerViewAdapter.LayananViewHolder holder, int position) {
+        final LayananDAO lyn = dataList.get(position);
+        holder.twNamaLayanan.setText(lyn.getNamaLayanan());
+        holder.twRambut.setText(lyn.getRambut());
+        holder.twBerat.setText(lyn.getBerat());
+        holder.twDurasi.setText(lyn.getDurasi());
+        holder.twTarif.setText(String.valueOf(lyn.getTarif()));
 
-        Glide.with(holder.twGambar.getContext())
-                .load(lyn.getImgURL())
-                .into(holder.twGambar);
+//        Glide.with(context)
+//                .load(lyn.getImgURL())
+//                .into(holder.twGambar);
 
 
+        holder.mParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager manager = ((AppCompatActivity) context).getSupportFragmentManager();
+                LayananDetailFragment dialog = new LayananDetailFragment();
+                dialog.show(manager, "dialog");
+
+                Bundle args = new Bundle();
+                args.putString("id", lyn.getId());
+                dialog.setArguments(args);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return filteredDataList.size();
+        return dataList.size();
     }
 
     static class LayananViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvLayanan,tvRambut,tvBerat,tvDurasi,tvTarif;
-        private ImageView twGambar;
+        private TextView twNamaLayanan, twRambut, twBerat, twDurasi, twTarif;
+//        private ImageView twGambar;
         private LinearLayout mParent;
 
         public LayananViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvLayanan = itemView.findViewById(R.id.tvLayanan);
-            tvRambut= itemView.findViewById(R.id.tvRambut);
-            tvBerat = itemView.findViewById(R.id.tvBerat);
-            tvDurasi = itemView.findViewById(R.id.tvDurasi);
-            tvTarif = itemView.findViewById(R.id.tvTarif);
-            twGambar = itemView.findViewById(R.id.twGambar);
-            mParent = itemView.findViewById(R.id.linearLayout);
+            twNamaLayanan = itemView.findViewById(R.id.tvLayanan);
+            twRambut = itemView.findViewById(R.id.tvRambut);
+            twBerat = itemView.findViewById(R.id.tvBerat);
+            twDurasi = itemView.findViewById(R.id.tvDurasi);
+//            twGambar = itemView.findViewById(R.id.twGambar);
+            twTarif =itemView.findViewById(R.id.tvTarif);
+            mParent = itemView.findViewById(R.id.mParentAdapt);
         }
     }
 
-
+//    @Override
+//    public Filter getFilter() {
+//        return new Filter() {
+//            @Override
+//            protected FilterResults performFiltering(final CharSequence charSequence) {
+//
+//                filteredDataList = charSequence == null ? dataList :
+//                        dataList.stream().filter(data -> data.getNamaLayanan().toLowerCase().contains(charSequence.toString().toLowerCase())).collect(Collectors.toList());
+//.
+//                FilterResults results = new FilterResults();
+//                results.values = filteredDataList;
+//                return results;
+//            }
+//
+//            @Override
+//            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+//                filteredDataList = (List<LayananDAO>) filterResults.values;
+//                notifyDataSetChanged();
+//            }
+//        };
+//    }
 }

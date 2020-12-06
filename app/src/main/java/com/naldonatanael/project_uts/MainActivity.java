@@ -20,10 +20,13 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.naldonatanael.project_uts.adapter.RecyclerViewAdapter;
+import com.naldonatanael.project_uts.add.BookingLayanan;
 import com.naldonatanael.project_uts.api.ApiClient;
 import com.naldonatanael.project_uts.api.ApiInterface;
 import com.naldonatanael.project_uts.dao.LayananDAO;
 import com.naldonatanael.project_uts.response.LayananResponse;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
         callGetLayanan.enqueue(new Callback<LayananResponse>() {
             @Override
-            public void onResponse(Call<LayananResponse> call, Response<LayananResponse> response) {
+            public void onResponse(Call<LayananResponse> call, @NotNull Response<LayananResponse> response) {
+                assert response.body() != null;
                 generateDataList(response.body().getLayanan());
-                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -94,13 +97,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void generateDataList(List<LayananDAO> LayananList) {
         recyclerView = findViewById(R.id.recycler_view_layanan);
-        adapter = new RecyclerViewAdapter(LayananList);
+        adapter = new RecyclerViewAdapter(LayananList,this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
-
 
 
     }
@@ -123,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, ContactUs.class));
         }else if(item.getItemId()==R.id.ProfilSaya){
             startActivity(new Intent(this, Profile.class));
+        }else if(item.getItemId()==R.id.Booking){
+            startActivity(new Intent(this, BookingLayanan.class));
         }else if (item.getItemId() == R.id.LogoutAkun) {
             if(firebaseUser != null) {
                 firebaseAuth.signOut();
