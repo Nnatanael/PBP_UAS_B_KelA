@@ -19,7 +19,7 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/Booking"
-        android:title="Booking Layanan"
+        android:title="Daftar Booking"
         app:showAsAction="never"/>
 
     <item

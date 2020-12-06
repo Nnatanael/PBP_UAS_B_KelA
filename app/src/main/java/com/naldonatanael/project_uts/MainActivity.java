@@ -11,6 +11,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +26,7 @@ import com.naldonatanael.project_uts.add.BookingLayanan;
 import com.naldonatanael.project_uts.api.ApiClient;
 import com.naldonatanael.project_uts.api.ApiInterface;
 import com.naldonatanael.project_uts.dao.LayananDAO;
+import com.naldonatanael.project_uts.fragment.DaftarBookingFragment;
 import com.naldonatanael.project_uts.response.LayananResponse;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
+    private Fragment fragment;
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
@@ -118,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
         }else if(item.getItemId()==R.id.ProfilSaya){
             startActivity(new Intent(this, Profile.class));
         }else if(item.getItemId()==R.id.Booking){
-            startActivity(new Intent(this, BookingLayanan.class));
+            fragment = new DaftarBookingFragment();
+            loadFragment(fragment);;
         }else if (item.getItemId() == R.id.LogoutAkun) {
             if(firebaseUser != null) {
                 firebaseAuth.signOut();
@@ -130,6 +135,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+    public void loadFragment(Fragment fragment) {
+        // Memulai transaksi
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        // mengganti isi container dengan fragment baru
+        ft.replace(R.id.container_main, fragment);
+        // atau ft.add(R.id.your_placeholder, new FooFragment());
+        // mulai melakukan hal di atas (jika belum di commit maka proses di atas belum dimulai)
+        ft.commit();
     }
 
     
