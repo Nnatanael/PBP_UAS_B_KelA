@@ -55,10 +55,12 @@ public interface ApiInterface {
     //Api Booking
     @POST("user")
     @FormUrlEncoded
-    Call<BookingResponse> createBooking(@Field("nama") String nama,
+    Call<BookingResponse> createBooking(@Field("userID") String userID,
+                                        @Field("nama") String nama,
                                         @Field("noTelp") String noTelp,
                                         @Field("jenisLayanan") String jenisLayanan,
                                         @Field("tglBook") String tglBook);
+
 
     //Api Layanan
     @GET("layanan")
