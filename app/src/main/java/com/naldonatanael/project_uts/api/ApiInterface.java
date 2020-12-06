@@ -64,21 +64,19 @@ public interface ApiInterface {
     @GET("booking")
     Call<BookingResponse> getAllKamar(@Query("data")String data);
 
-//    @GET("booking/{id}")
-//    Call<> getKamarById(@Path("id")String id,
-//                                           @Query("data")String data);
-//
-//    @PUT("booking/{id}")
-//    @FormUrlEncoded
-//    Call<KamarResponseObject> updateKamar(@Path("id")String id,
-//                                          @Field("nama_kamar")String nama_kamar, @Field("kapasitas")String kapasitas,
-//                                          @Field("harga")String harga, @Field("imageURL")String image);
-//
-//    @DELETE("booking/{id}")
-//    Call<KamarResponseObject> deleteKamar(@Path("id")String id);
+    @GET("booking/{id}")
+    Call<BookingResponse> getKamarById(@Path("id")String id,
+                                           @Query("data")String data);
 
+    @PUT("booking/{id}")
+    @FormUrlEncoded
+    Call<BookingResponse> updateKamar(@Path("id")String id,
+                                          @Field("nama")String nama, @Field("noTelp")String noTelp,
+                                          @Field("jenisLayanan")String jenisLayanan, @Field("tglBook")String tglBook);
 
-
+    @DELETE("booking/{id}")
+    Call<BookingResponse> deleteKamar(@Path("id")String id);
+    
 
 
     //Api Layanan
