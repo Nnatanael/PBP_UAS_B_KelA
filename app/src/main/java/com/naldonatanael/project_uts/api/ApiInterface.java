@@ -76,7 +76,7 @@ public interface ApiInterface {
 
     @DELETE("booking/{id}")
     Call<BookingResponse> deleteKamar(@Path("id")String id);
-    
+
 
 
     //Api Layanan
